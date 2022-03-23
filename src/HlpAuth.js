@@ -1,13 +1,10 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { getSessionToken, setSessionToken, useAuth } from './useAuth';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { getAccreditations, getTokenFromUri, getUserInfos } from './actions';
 
 
 export const HlpAuth = ({ UrlBackend, OnConnected, onFinished, autoLogin, children }) => {
   const [login] = useAuth(UrlBackend);
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const [done, setDone] = useState(false);
 
@@ -16,7 +13,7 @@ export const HlpAuth = ({ UrlBackend, OnConnected, onFinished, autoLogin, childr
     if (!token) {
       token = getSessionToken(); // Si on a un token dans le localStorage
     } else {
-      navigate(location.pathname, { replace: true });
+      window.history.pushState({}, document.title, window.location.pathname);
     }
     if (token) {
       // On vérifie que l'utilisateur est (encore) valide...
@@ -40,7 +37,7 @@ export const HlpAuth = ({ UrlBackend, OnConnected, onFinished, autoLogin, childr
             accreditations:
               accreditations && accreditations.data && accreditations.data.data ? accreditations.data.data : []
           });
-          navigate(location.pathname, { replace: true });
+          window.history.pushState({}, document.title, window.location.pathname);
           return true;
         } else {
           return false;
@@ -68,6 +65,6 @@ export const HlpAuth = ({ UrlBackend, OnConnected, onFinished, autoLogin, childr
   }, []);
 
   // Affichage des enfants du composant
-  return  <Fragment>{done ? {children} : <div/>}</Fragment>;
+  return done ? (<Fragment>{children}</Fragment>) : <div/>;
 };
 
