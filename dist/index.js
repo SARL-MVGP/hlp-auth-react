@@ -190,7 +190,7 @@ var HlpAuth = function HlpAuth(_ref) {
   React.useEffect(function () {
     tryToConnectUserWithToken();
   }, []);
-  return /*#__PURE__*/React__default.createElement(Fragment, null, done ? children : /*#__PURE__*/React__default.createElement("div", null));
+  return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, done ? children : /*#__PURE__*/React__default.createElement("div", null));
 };
 
 var useAuth$1 = useAuth;
