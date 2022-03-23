@@ -406,7 +406,8 @@ var HlpAuth = function HlpAuth(_ref) {
   var UrlBackend = _ref.UrlBackend,
       OnConnected = _ref.OnConnected,
       onFinished = _ref.onFinished,
-      autoLogin = _ref.autoLogin;
+      autoLogin = _ref.autoLogin,
+      children = _ref.children;
 
   var _useAuth = useAuth(UrlBackend),
       login = _useAuth[0];
@@ -415,6 +416,7 @@ var HlpAuth = function HlpAuth(_ref) {
   var navigate = useNavigate();
 
   var _useState = React.useState(false),
+      done = _useState[0],
       setDone = _useState[1];
 
   var tryToConnectUserWithToken = function tryToConnectUserWithToken() {
@@ -486,7 +488,9 @@ var HlpAuth = function HlpAuth(_ref) {
   React.useEffect(function () {
     tryToConnectUserWithToken();
   }, []);
-  return /*#__PURE__*/React__default.createElement("div", null, "sss");
+  return /*#__PURE__*/React__default.createElement(React.Fragment, null, done ? {
+    children: children
+  } : /*#__PURE__*/React__default.createElement("div", null));
 };
 
 var useAuth$1 = useAuth;
