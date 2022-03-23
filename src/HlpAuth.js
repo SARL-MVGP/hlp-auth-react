@@ -68,6 +68,6 @@ export const HlpAuth = ({ UrlBackend, OnConnected, onFinished, autoLogin, childr
   }, []);
 
   // Affichage des enfants du composant
-  return  <div>sss</div>;
+  return  <Fragment>{done ? {children} : <div/>}</Fragment>;
 };
 
