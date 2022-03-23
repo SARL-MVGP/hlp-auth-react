@@ -412,8 +412,8 @@ var HlpAuth = function HlpAuth(_ref) {
   var _useAuth = useAuth(UrlBackend),
       login = _useAuth[0];
 
-  var location = useLocation();
   var navigate = useNavigate();
+  var location = useLocation();
 
   var _useState = React.useState(false),
       done = _useState[0],

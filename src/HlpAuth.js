@@ -6,8 +6,8 @@ import { getAccreditations, getTokenFromUri, getUserInfos } from './actions';
 
 export const HlpAuth = ({ UrlBackend, OnConnected, onFinished, autoLogin, children }) => {
   const [login] = useAuth(UrlBackend);
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [done, setDone] = useState(false);
 
