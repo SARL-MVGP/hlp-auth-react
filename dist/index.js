@@ -488,9 +488,9 @@ var HlpAuth = function HlpAuth(_ref) {
   React.useEffect(function () {
     tryToConnectUserWithToken();
   }, []);
-  return done ? {
+  return /*#__PURE__*/React__default.createElement(React.Fragment, null, done ? {
     children: children
-  } : /*#__PURE__*/React__default.createElement("div", null);
+  } : /*#__PURE__*/React__default.createElement("div", null));
 };
 
 var useAuth$1 = useAuth;

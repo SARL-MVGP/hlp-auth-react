@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useRef, useEffect, useCallback, useState } from 'react';
+import React, { useContext, createContext, useRef, useEffect, useCallback, useState, Fragment } from 'react';
 
 var token_key = 'sessionToken';
 var setSessionToken = function setSessionToken(token) {
@@ -487,9 +487,9 @@ var HlpAuth = function HlpAuth(_ref) {
   useEffect(function () {
     tryToConnectUserWithToken();
   }, []);
-  return done ? {
+  return /*#__PURE__*/React.createElement(Fragment, null, done ? {
     children: children
-  } : /*#__PURE__*/React.createElement("div", null);
+  } : /*#__PURE__*/React.createElement("div", null));
 };
 
 var useAuth$1 = useAuth;

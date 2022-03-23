@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { getSessionToken, setSessionToken, useAuth } from './useAuth';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getAccreditations, getTokenFromUri, getUserInfos } from './actions';
@@ -68,6 +68,6 @@ export const HlpAuth = ({ UrlBackend, OnConnected, onFinished, autoLogin, childr
   }, []);
 
   // Affichage des enfants du composant
-  return  done ? {children} : <div/>;
+  return  <Fragment>{done ? {children} : <div/>}</Fragment>;
 };
 
