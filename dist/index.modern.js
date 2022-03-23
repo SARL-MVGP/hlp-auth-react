@@ -1,147 +1,199 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const token_key = 'sessionToken';
-const setSessionToken = token => {
+var token_key = 'sessionToken';
+var setSessionToken = function setSessionToken(token) {
   localStorage.setItem(token_key, token);
 };
-const deleteSessionToken = () => {
+var deleteSessionToken = function deleteSessionToken() {
   localStorage.removeItem(token_key);
 };
-const getSessionToken = () => {
+var getSessionToken = function getSessionToken() {
   return localStorage.getItem(token_key);
 };
-const doLogin = (backUrl, path) => {
+var doLogin = function doLogin(backUrl, path) {
   window.location.href = backUrl + '/_auth/login?redirect=' + encodeURI(path);
 };
-const doLogout = (backUrl, path) => {
+var doLogout = function doLogout(backUrl, path) {
   deleteSessionToken();
   window.location.href = backUrl + '/_auth/disconnect?redirect=' + encodeURI(path);
 };
 function useAuth(backendUrl) {
-  const logout = () => {
+  var logout = function logout() {
     doLogout(backendUrl, location.pathname);
   };
 
-  const login = () => {
+  var login = function login() {
     doLogin(backendUrl, location.pathname);
   };
 
   return [login, logout];
 }
 
-const getTokenFromUri = () => {
+// A type of promise-like that resolves synchronously and supports only one observer
+
+const _iteratorSymbol = /*#__PURE__*/ typeof Symbol !== "undefined" ? (Symbol.iterator || (Symbol.iterator = Symbol("Symbol.iterator"))) : "@@iterator";
+
+const _asyncIteratorSymbol = /*#__PURE__*/ typeof Symbol !== "undefined" ? (Symbol.asyncIterator || (Symbol.asyncIterator = Symbol("Symbol.asyncIterator"))) : "@@asyncIterator";
+
+// Asynchronously await a promise and pass the result to a finally continuation
+function _finallyRethrows(body, finalizer) {
+	try {
+		var result = body();
+	} catch (e) {
+		return finalizer(true, e);
+	}
+	if (result && result.then) {
+		return result.then(finalizer.bind(null, false), finalizer.bind(null, true));
+	}
+	return finalizer(false, result);
+}
+
+var getTokenFromUri = function getTokenFromUri() {
   return getQueryVar('token');
 };
-const getQueryVar = varName => {
+var getQueryVar = function getQueryVar(varName) {
   var queryStr = unescape(window.location.search) + '&';
   var regex = new RegExp('.*?[&\\?]' + varName + '=(.*?)&.*');
   var val = queryStr.replace(regex, '$1');
   return val == queryStr ? false : val;
 };
-const getUserInfos = async (token, backendUrl) => {
-  var myHeaders = new Headers({
-    Authorization: 'Bearer ' + token
-  });
-  var myInit = {
-    method: 'GET',
-    headers: myHeaders
-  };
-  const res = await fetch(`${backendUrl}/_auth/userinfos`, myInit);
-
-  if (res.status !== 200) {
-    return false;
-  } else {
-    const jsonPayload = await res.json();
-    return jsonPayload.data;
-  }
-};
-const getAccreditations = async (token, backendUrl) => {
-  var myHeaders = new Headers({
-    Authorization: 'Bearer ' + token
-  });
-  var myInit = {
-    method: 'GET',
-    headers: myHeaders
-  };
-  const res = await fetch(`${backendUrl}/_auth/useraccreditations`, myInit);
-
-  if (res.status !== 200) {
-    return false;
-  } else {
-    const jsonPayload = await res.json();
-    return jsonPayload;
-  }
-};
-
-const HlpAuth = ({
-  UrlBackend,
-  OnConnected,
-  onFinished,
-  autoLogin,
-  children
-}) => {
-  const [login] = useAuth(UrlBackend);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [done, setDone] = useState(false);
-
-  const tryToConnectUserWithToken = async () => {
-    let token = getTokenFromUri();
-
-    if (!token) {
-      token = getSessionToken();
-    } else {
-      navigate(location.pathname, {
-        replace: true
-      });
-    }
-
-    if (token) {
-      const _userInfos = await getUserInfos(token, UrlBackend);
-
-      try {
-        if (_userInfos) {
-          const accreditations = await getAccreditations(token, UrlBackend);
-          setSessionToken(token);
-          OnConnected({
-            id: _userInfos.id,
-            type: "E",
-            email: _userInfos.email,
-            nom: _userInfos.nom,
-            prenom: _userInfos.prenom,
-            token,
-            accreditations: accreditations && accreditations.data && accreditations.data.data ? accreditations.data.data : []
-          });
-          navigate(location.pathname, {
-            replace: true
-          });
-          return true;
-        } else {
-          return false;
-        }
-      } finally {
-        onFinished();
-        setDone(true);
+var getUserInfos = function getUserInfos(token, backendUrl) {
+  try {
+    var myHeaders = new Headers({
+      Authorization: 'Bearer ' + token
+    });
+    var myInit = {
+      method: 'GET',
+      headers: myHeaders
+    };
+    return Promise.resolve(fetch(backendUrl + "/_auth/userinfos", myInit)).then(function (res) {
+      if (res.status !== 200) {
+        return false;
+      } else {
+        return Promise.resolve(res.json()).then(function (jsonPayload) {
+          return jsonPayload.data;
+        });
       }
-    }
+    });
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
+var getAccreditations = function getAccreditations(token, backendUrl) {
+  try {
+    var myHeaders = new Headers({
+      Authorization: 'Bearer ' + token
+    });
+    var myInit = {
+      method: 'GET',
+      headers: myHeaders
+    };
+    return Promise.resolve(fetch(backendUrl + "/_auth/useraccreditations", myInit)).then(function (res) {
+      if (res.status !== 200) {
+        return false;
+      } else {
+        return Promise.resolve(res.json());
+      }
+    });
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
 
-    if (autoLogin) {
-      login();
-    } else {
-      onFinished();
-      setDone(true);
+var HlpAuth = function HlpAuth(_ref) {
+  var UrlBackend = _ref.UrlBackend,
+      OnConnected = _ref.OnConnected,
+      onFinished = _ref.onFinished,
+      autoLogin = _ref.autoLogin,
+      children = _ref.children;
+
+  var _useAuth = useAuth(UrlBackend),
+      login = _useAuth[0];
+
+  var location = useLocation();
+  var navigate = useNavigate();
+
+  var _useState = useState(false),
+      done = _useState[0],
+      setDone = _useState[1];
+
+  var tryToConnectUserWithToken = function tryToConnectUserWithToken() {
+    try {
+      var _temp3 = function _temp3(_result) {
+        if (_exit2) return _result;
+
+        if (autoLogin) {
+          login();
+        } else {
+          onFinished();
+          setDone(true);
+        }
+      };
+
+      var _exit2 = false;
+      var token = getTokenFromUri();
+
+      if (!token) {
+        token = getSessionToken();
+      } else {
+        navigate(location.pathname, {
+          replace: true
+        });
+      }
+
+      var _temp4 = function () {
+        if (token) {
+          return Promise.resolve(getUserInfos(token, UrlBackend)).then(function (_userInfos) {
+            return _finallyRethrows(function () {
+              if (_userInfos) {
+                return Promise.resolve(getAccreditations(token, UrlBackend)).then(function (accreditations) {
+                  setSessionToken(token);
+                  OnConnected({
+                    id: _userInfos.id,
+                    type: "E",
+                    email: _userInfos.email,
+                    nom: _userInfos.nom,
+                    prenom: _userInfos.prenom,
+                    token: token,
+                    accreditations: accreditations && accreditations.data && accreditations.data.data ? accreditations.data.data : []
+                  });
+                  navigate(location.pathname, {
+                    replace: true
+                  });
+                  _exit2 = true;
+                  return true;
+                });
+              } else {
+                _exit2 = true;
+                return false;
+              }
+            }, function (_wasThrown, _result2) {
+              onFinished();
+              setDone(true);
+              if (_wasThrown) throw _result2;
+              return _result2;
+            });
+          });
+        }
+      }();
+
+      return Promise.resolve(_temp4 && _temp4.then ? _temp4.then(_temp3) : _temp3(_temp4));
+    } catch (e) {
+      return Promise.reject(e);
     }
   };
 
-  useEffect(() => {
+  useEffect(function () {
     tryToConnectUserWithToken();
   }, []);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, done ? children : /*#__PURE__*/React.createElement("div", null));
+  return done ? {
+    children: children
+  } : /*#__PURE__*/React.createElement("div", null);
 };
 
-const useAuth$1 = useAuth;
-const HlpAuth$1 = HlpAuth;
+var useAuth$1 = useAuth;
+var HlpAuth$1 = HlpAuth;
 
 export { HlpAuth$1 as HlpAuth, useAuth$1 as useAuth };
 //# sourceMappingURL=index.modern.js.map
