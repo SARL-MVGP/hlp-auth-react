@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useRef, useEffect, useCallback, useState, Fragment } from 'react';
+import React, { useContext, createContext, useRef, useEffect, useCallback, useState } from 'react';
 
 var token_key = 'sessionToken';
 var setSessionToken = function setSessionToken(token) {
@@ -405,8 +405,7 @@ var HlpAuth = function HlpAuth(_ref) {
   var UrlBackend = _ref.UrlBackend,
       OnConnected = _ref.OnConnected,
       onFinished = _ref.onFinished,
-      autoLogin = _ref.autoLogin,
-      children = _ref.children;
+      autoLogin = _ref.autoLogin;
 
   var _useAuth = useAuth(UrlBackend),
       login = _useAuth[0];
@@ -415,7 +414,6 @@ var HlpAuth = function HlpAuth(_ref) {
   var navigate = useNavigate();
 
   var _useState = useState(false),
-      done = _useState[0],
       setDone = _useState[1];
 
   var tryToConnectUserWithToken = function tryToConnectUserWithToken() {
@@ -487,9 +485,7 @@ var HlpAuth = function HlpAuth(_ref) {
   useEffect(function () {
     tryToConnectUserWithToken();
   }, []);
-  return /*#__PURE__*/React.createElement(Fragment, null, done ? {
-    children: children
-  } : /*#__PURE__*/React.createElement("div", null));
+  return /*#__PURE__*/React.createElement("div", null, "sss");
 };
 
 var useAuth$1 = useAuth;
