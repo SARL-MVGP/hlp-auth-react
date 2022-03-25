@@ -187,7 +187,9 @@ var HlpAuth = function HlpAuth(_ref) {
 
 var useAuth$1 = useAuth;
 var HlpAuth$1 = HlpAuth;
+var getSessionToken$1 = getSessionToken;
 
 exports.HlpAuth = HlpAuth$1;
+exports.getSessionToken = getSessionToken$1;
 exports.useAuth = useAuth$1;
 //# sourceMappingURL=index.js.map

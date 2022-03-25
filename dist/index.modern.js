@@ -184,6 +184,7 @@ var HlpAuth = function HlpAuth(_ref) {
 
 var useAuth$1 = useAuth;
 var HlpAuth$1 = HlpAuth;
+var getSessionToken$1 = getSessionToken;
 
-export { HlpAuth$1 as HlpAuth, useAuth$1 as useAuth };
+export { HlpAuth$1 as HlpAuth, getSessionToken$1 as getSessionToken, useAuth$1 as useAuth };
 //# sourceMappingURL=index.modern.js.map
